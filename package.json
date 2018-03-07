@@ -1,0 +1,26 @@
+{
+  "name": "money-log",
+  "version": "1.0.0",
+  "description": "log of the input and output money for finance control",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvescaio/Money-Log.git"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "Caio Alves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alvescaio/Money-Log/issues"
+  },
+  "homepage": "https://github.com/alvescaio/Money-Log#readme",
+  "dependencies": {
+    "google-auth-library": "^0.12.0",
+    "googleapis": "^25.0.0"
+  }
+}
