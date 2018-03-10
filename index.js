@@ -5,9 +5,12 @@ var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 
+const SPREADSHEETID = '1atZO-3yhs30gXRZin-aq8aMBNzRypKPyWOPBbYdv3HM';
+var sheets = google.sheets('v4');
+
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json
-var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart.json';
@@ -31,7 +34,7 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  var clientSecret = credentials.installed.client_secret;
+  // var clientSecret = credentials.installed.client_secret;
   var clientId = credentials.installed.client_id;
   var redirectUrl = credentials.installed.redirect_uris[0];
   var auth = new googleAuth();
@@ -102,11 +105,11 @@ function storeToken(token) {
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
 function listMajors(auth) {
-  var sheets = google.sheets('v4');
+  addCell();
   sheets.spreadsheets.values.get({
     auth: auth,
     //spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-    spreadsheetId: '1atZO-3yhs30gXRZin-aq8aMBNzRypKPyWOPBbYdv3HM',
+    spreadsheetId: SPREADSHEETID,
     range: 'A:C',
   }, function(err, response) {
     if (err) {
@@ -125,6 +128,32 @@ function listMajors(auth) {
           console.log('%s, %s, %s',  row[0], row[1], row[2]);
         }
       }
+    }
+  });
+}
+
+
+function addCell(){
+  let values = [
+    [
+      'true'
+    ],
+    // Additional rows ...
+  ];
+  let body = {
+    values: values
+  };
+  sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEETID,
+    range: 'D:D',
+    valueInputOption: 'USER_ENTERED',
+    resource: body
+  }, function(err, result) {
+    if(err) {
+      // Handle error
+      console.log(err);
+    } else {
+      console.log('%d cells updated.', result.updatedCells);
     }
   });
 }
